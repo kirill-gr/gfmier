@@ -1,5 +1,4 @@
 import re
-import os
 
 
 def parse_file(f):
@@ -19,7 +18,7 @@ def parse_file(f):
             if line_strip[-1] == '|':
                 if line_continued:
                     line_continued.append(line)
-                    line = nospaces('<br>'.join(line_continued)) + os.linesep
+                    line = nospaces('<br>'.join(line_continued)) + '\n'
                     concat_count += 1
                     line_continued = []
             elif line_continued or line_strip[0] == '|':
