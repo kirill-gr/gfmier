@@ -1,7 +1,10 @@
 import re
+import os
+
 
 def parse_file(f):
     spaces = re.compile(r'\s+')
+
     def nospaces(line):
         return spaces.sub(' ', line)
 
@@ -9,18 +12,18 @@ def parse_file(f):
     break_count = 0
     parsed = []
 
-    line_continued = ''
+    line_continued = []
     for line in f:
         line_strip = line.strip()
-        new_line = ''
         if line_strip:
             if line_strip[-1] == '|':
                 if line_continued:
-                    line = nospaces(line_continued + line) + '\r\n'
+                    line_continued.append(line)
+                    line = nospaces('<br>'.join(line_continued)) + os.linesep
                     concat_count += 1
-                    line_continued = ''
+                    line_continued = []
             elif line_continued or line_strip[0] == '|':
-                line_continued += line + '<br>'
+                line_continued.append(line)
                 break_count += 1
         if not line_continued:
             parsed.append(line)
